@@ -59,7 +59,6 @@ module "web_server_sg" {
       cidr_blocks = ingress.cidr_blocks
     }
   ]
-
   egress_with_cidr_blocks = [
     for egress in var.sg_web_egress :
     {
@@ -281,5 +280,4 @@ resource "aws_iam_role_policy_attachment" "ecs_agent" {
   role       = aws_iam_role.ecs_agent.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
-
 
