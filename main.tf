@@ -105,7 +105,8 @@ module "asg" {
   image_id             = var.instance_ami
   instance_type        = var.instance_type
   security_groups      = [local.web_sg_id]
-  user_data            = "#!/bin/bash\necho ECS_CLUSTER=flask-web >> /etc/ecs/ecs.config"
+  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.clustername} >> /etc/ecs/ecs.config"
+#  user_data            = "#!/bin/bash\necho ECS_CLUSTER=flask-web >> /etc/ecs/ecs.config"
   iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
   key_name             = var.key_name
   target_group_arns    = module.alb.target_group_arns
