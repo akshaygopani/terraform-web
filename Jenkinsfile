@@ -6,7 +6,7 @@ pipeline{
             AWS_REGION = credentials('AWS_REGION')
         }
     stages {
-        stage('build') {
+        stage('docker-build') {
            steps{
                 sh '''
                    cd docker
@@ -15,7 +15,7 @@ pipeline{
                    '''
            }   
         }
-        stage('push'){
+        stage('docker-push'){
            steps{
                sh '''
                   aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/w6s1v6p3  
@@ -23,14 +23,21 @@ pipeline{
                   '''
            }
         }
-        stage('deploy')
+        stage('terraform-init')
         {
            steps{
                 sh '''
                    terraform init
+                   '''    
+           }
+        }
+        stage('terraform-apply')
+        {
+           steps{
+                sh '''
                    terraform fmt
                    terraform validate
-                   terraform apply -auto-approve    
+                   terraform apply -auto-approve                   
                    '''    
            }
         }
